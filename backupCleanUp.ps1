@@ -5,7 +5,7 @@
 .DESCRIPTION
   To combine this script with a Scheduled Task, it should call the powershell.exe with -f argument,
   sample below:  
-  powershell.exe -f "C:\DB-Scripts\BackupCleanUp.ps1"
+  powershell.exe -f "D:\DB-Scripts\backupCleanUp.ps1"
 .INPUTS
   None
 .OUTPUTS
