@@ -31,22 +31,27 @@ $ppRootDirClient = "C:\Program Files (x86)\Deltek\People Planner 4.2.0 CU01-566"
 
 function checkWebServiceSwitchValueLineWebConfig {
     
-    cd $ppRootDir
+    if (Test-Path -Path $ppRootDir) {
 
-    $ppDirs = Get-ChildItem -Path $ppRootDir
+        cd $ppRootDir
 
-    foreach ($ppDir in $ppDirs) {
-        $configFiles = @(Get-ChildItem -Path $ppDir | Where-Object {$_.Name -eq "web.config"} | Select Fullname)
+        $ppDirs = Get-ChildItem -Path $ppRootDir
+
+        foreach ($ppDir in $ppDirs) {
+            $configFiles = @(Get-ChildItem -Path $ppDir | Where-Object {$_.Name -eq "web.config"} | Select Fullname)
     
-        foreach ($configFile in $configFiles) {
-        Write-Host "`n"
-        Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
-        (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+            foreach ($configFile in $configFiles) {
+            Write-Host "`n"
+            Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
+            (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+            }
         }
     }
 }
 
 function checkPPServiceExeConfig {
+
+    if (Test-Path -Path $ppRootDirService) {
 
     cd $ppRootDirService
 
@@ -54,17 +59,22 @@ function checkPPServiceExeConfig {
     Write-Host "`n"
     Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
     (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+    }
 }
 
 
 function checkPPClientExeConfig {
 
+    if (Test-Path -Path $ppRootDirClient) {
+
     cd $ppRootDirClient
 
     $configFile = @(Get-ChildItem -Path $ppRootDirClient | Where-Object {$_.Name -eq "PeoplePlanner.exe.config"} | Select Fullname)
+    
     Write-Host "`n"
     Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
     (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+    }
 }
 
 #-------------------------------------------------[Execution]--------------------------------------------------
