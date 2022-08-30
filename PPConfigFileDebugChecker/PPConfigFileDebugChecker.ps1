@@ -1,4 +1,4 @@
-﻿#requires -version 2
+﻿#requires -version 4
 <#
 .SYNOPSIS
   People Planner web.config checker for switchValue logging level
@@ -17,20 +17,25 @@
 
 #------------------------------------------------[Declarations]------------------------------------------------
 
+# Web Service Directory
 $ppRootDir = "C:\inetpub\People Planner Web Apps 4.2.0 CU01-566"
 #$ppDirs = Get-ChildItem -Path $ppRootDir | Where-Object {$_.Name -like "*API*" -or $_.Name -like "*MyPlan*" -or $_.Name -like "*Web*"}
 $ppDirs = Get-ChildItem -Path $ppRootDir
 
+# PP Service Directory
+$ppRootDirService = "C:\Program Files (x86)\Deltek\People Planner Service 4.2.0 CU01-566"
+
+# PP Client Directory
+$ppRootDirClient = "C:\Program Files (x86)\Deltek\People Planner 4.2.0 CU01-566"
+
 #-------------------------------------------------[Functions]--------------------------------------------------
 
-function goToPPDir {
+function checkWebServiceSwitchValueLineWebConfig {
+    
     cd $ppRootDir
-}
-
-function checkSwitchValueLineWebConfig {
 
     foreach ($ppDir in $ppDirs) {
-        $configFiles = @(Get-ChildItem -Path $ppDir | Where-Object {$_.Name -like "web.config"} | Select Fullname)
+        $configFiles = @(Get-ChildItem -Path $ppDir | Where-Object {$_.Name -eq "web.config"} | Select Fullname)
     
         foreach ($configFile in $configFiles) {
         Write-Host "`n"
@@ -40,7 +45,29 @@ function checkSwitchValueLineWebConfig {
     }
 }
 
+function checkPPServiceExeConfig {
+
+    cd $ppRootDirService
+
+    $configFile = @(Get-ChildItem -Path $ppRootDirService | Where-Object {$_.Name -eq "PeoplePlannerService.exe.config"} | Select Fullname)
+    Write-Host "`n"
+    Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
+    (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+}
+
+
+function checkPPClientExeConfig {
+
+    cd $ppRootDirClient
+
+    $configFile = @(Get-ChildItem -Path $ppRootDirClient | Where-Object {$_.Name -eq "PeoplePlanner.exe.config"} | Select Fullname)
+    Write-Host "`n"
+    Write-Host ([string]($configFile.FullName)) -ForegroundColor Green
+    (Get-Content ([string]($configFile.FullName)) | Select-String -Pattern "switchValue") -Replace "`r",", "
+}
+
 #-------------------------------------------------[Execution]--------------------------------------------------
 
-goToPPDir
-checkSwitchValueLineWebConfig
+checkWebServiceSwitchValueLineWebConfig
+checkPPServiceExeConfig
+checkPPClientExeConfig
