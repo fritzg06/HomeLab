@@ -18,9 +18,8 @@
 #------------------------------------------------[Declarations]------------------------------------------------
 
 # Web Service Directory
-$ppRootDir = "C:\inetpub\People Planner Web Apps 4.2.0 CU01-566"
 #$ppDirs = Get-ChildItem -Path $ppRootDir | Where-Object {$_.Name -like "*API*" -or $_.Name -like "*MyPlan*" -or $_.Name -like "*Web*"}
-
+$ppRootDir = "C:\inetpub\People Planner Web Apps 4.2.0 CU01-566"
 
 # PP Service Directory
 $ppRootDirService = "C:\Program Files (x86)\Deltek\People Planner Service 4.2.0 CU01-566"
