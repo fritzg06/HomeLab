@@ -1,7 +1,7 @@
 ﻿#requires -version 4
 <#
 .SYNOPSIS
-  People Planner web.config checker for switchValue logging level
+  People Planner web.config checker for switchValue logging level, PeoplePlannerService.exe.config, PeoplePlanner.exe.config
 .DESCRIPTION
   None
 .INPUTS
