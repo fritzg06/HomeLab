@@ -36,15 +36,14 @@ $appInstances = @(Get-ChildItem -Path $macDir | Where-Object {$_.Name -like "w_*
         foreach ($serverIni in $serverInis) {
         
         Write-Host "`nChecking -- "$appInstance.Name "-" $serverIni -ForegroundColor Green
+        
         (Get-Content $serverIni | Select-String "server.debug.enabled") -Replace "`r",", "
+        
         }
-
-
     }
-
-
 }
 
 
 #-------------------------------------------------[Execution]--------------------------------------------------
+
 checkServerIniServerDebugEnabled
