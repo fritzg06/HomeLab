@@ -58,7 +58,7 @@ Foreach ($ppServiceName in $ppServiceNames) {
         Write-Host "Service is:" (Get-Service -Name $ppServiceName).Status
         Write-Host $ppServiceName "is not running, trying to start this service..."
         Get-Service -Name $ppServiceName | Start-Service
-        Write-Host "If service did not start, will re-try after" $delay "seconds"...
+        Write-Host "If service did not start, will re-try after" $delay "seconds..."
         Start-Sleep $delay
         }
         
