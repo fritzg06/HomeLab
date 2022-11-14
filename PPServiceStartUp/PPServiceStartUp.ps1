@@ -22,30 +22,52 @@
 # People Planner Service defined here will be attempted for service start.
 $ppServiceNames = @("People Planner Service 4.2.0 CU01-566")
 
-# Number of attempts to try start People Planner Service
-[int]$numberOfAttempts = 10
+# Time delay in seconds between re-try in starting the service
+[int]$delay = 15
+
+# Timestamp command expression
+$timestampCommand = 'Get-Date -Format "MM/dd/yyyy HH:mm K"'
 
 #-------------------------------------------------[Functions]--------------------------------------------------
+
+function logFileStart {
+$logFile = "D:\Scripts\SRE\PPServiceStartUp_" + $((Get-Date).ToString('yyyy-MM-dd_HH-mm-ss')) + ".log"
+Start-Transcript -Path $logFile
+
+function logFileStop {
+Stop-Transcript
+}
 
 function checkPPserviceAndStart {
 
 Foreach ($ppServiceName in $ppServiceNames) {
 
-    Write-Host "`nChecking PP Service - " $ppServiceName
+    Write-Host "`n"
+    Invoke-Expression $timestampCommand
+    Write-Host "`nChecking PP Service -" $ppServiceName
     Get-Service -Name $ppServiceName | ft -auto
-    Write-Host "Service is: " (Get-Service -Name $ppServiceName).Status
+    Write-Host "Service is:" (Get-Service -Name $ppServiceName).Status
 
         While ((Get-Service -Name $ppServiceName).Status -ne "Running") {
+        Write-Host "`n"
+        Invoke-Expression $timestampCommand
+        Write-Host "`n"
+        Write-Host "Service is:" (Get-Service -Name $ppServiceName).Status
         Write-Host $ppServiceName "is not running, trying to start this service..."
         Get-Service -Name $ppServiceName | Start-Service
-        Start-Sleep 180
+        Write-Host "If service did not start, will re-try after" $delay "seconds"...
+        Start-Sleep $delay
         }
-        Write-Host "PP Service has started: " $ppServiceName
-    
-    }
+        
+        Write-Host "`n"
+        Invoke-Expression $timestampCommand
+        Write-Host "`nPP Service has started: " $ppServiceName
 
+    }
 }
 
 #-------------------------------------------------[Execution]--------------------------------------------------
 
+logFileStart
 checkPPserviceAndStart
+logFileStop
