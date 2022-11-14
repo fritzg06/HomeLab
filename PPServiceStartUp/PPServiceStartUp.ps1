@@ -33,6 +33,7 @@ $timestampCommand = 'Get-Date -Format "MM/dd/yyyy HH:mm K"'
 function logFileStart {
 $logFile = "D:\Scripts\SRE\PPServiceStartUp_" + $((Get-Date).ToString('yyyy-MM-dd_HH-mm-ss')) + ".log"
 Start-Transcript -Path $logFile
+}
 
 function logFileStop {
 Stop-Transcript
