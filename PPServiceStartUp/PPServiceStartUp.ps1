@@ -1,9 +1,11 @@
 #requires -version 4
 <#
 .SYNOPSIS
-  None
+  This is a script to start the service for People Planner. It uses a while loop to wait until the service is started.
 .DESCRIPTION
-  None
+  This is a script to start the service for People Planner. It uses a while loop to wait until the service is started.
+  It has a time delay between attempts of service restart. Can try to use multiple People Planner service in an array 
+  variable, and it uses foreach loop to iterate per defined service.
 .INPUTS
   None
 .OUTPUTS
@@ -23,7 +25,7 @@
 $ppServiceNames = @("People Planner Service 4.2.0 CU01-566")
 
 # Time delay in seconds between re-try in starting the service
-[int]$delay = 15
+[int]$delay = 180
 
 # Timestamp command expression
 $timestampCommand = 'Get-Date -Format "MM/dd/yyyy HH:mm K"'
